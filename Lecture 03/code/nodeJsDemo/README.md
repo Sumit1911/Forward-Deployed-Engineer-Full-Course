@@ -11,10 +11,17 @@ Requires Node.js 20 or newer.
 ```bash
 cd nodeJsDemo
 npm install
-cp .env.example .env
 ```
 
-Set your real `OPENAI_API_KEY` in `.env`, then start the API:
+Create a `.env` file and set your real OpenRouter API key:
+
+```bash
+OPENROUTER_API_KEY=sk-or-v1-your-openrouter-key
+OPENAI_MODEL=openai/gpt-4o-mini
+PORT=8080
+```
+
+Then start the API:
 
 ```bash
 npm start

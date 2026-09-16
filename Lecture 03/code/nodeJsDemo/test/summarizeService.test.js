@@ -3,13 +3,15 @@ import test from "node:test";
 
 import { createSummarizeService } from "../src/summarizeService.js";
 
-test("summarize sends the expected prompt and model to OpenAI", async () => {
+test("summarize sends the expected prompt and model to OpenRouter", async () => {
   let request;
   const client = {
-    responses: {
-      create: async (input) => {
-        request = input;
-        return { output_text: "Line one.\nLine two." };
+    chat: {
+      completions: {
+        create: async (input) => {
+          request = input;
+          return { choices: [{ message: { content: "Line one.\nLine two." } }] };
+        },
       },
     },
   };
@@ -20,7 +22,11 @@ test("summarize sends the expected prompt and model to OpenAI", async () => {
   assert.equal(result, "Line one.\nLine two.");
   assert.deepEqual(request, {
     model: "test-model",
-    input: "Summarize this support ticket in 2 lines : \n\nPrinter is offline.",
-    store: false,
+    messages: [
+      {
+        role: "user",
+        content: "Summarize this support ticket in 2 lines:\n\nPrinter is offline.",
+      },
+    ],
   });
 });
